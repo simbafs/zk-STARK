@@ -6,6 +6,7 @@
 #import "@preview/callisto:0.2.5"
 #import "@preview/pinit:0.2.2": *
 #import "@preview/fletcher:0.5.8"
+#import "@preview/tiaoma:0.3.0"
 
 // #show: codly-init.with()
 
@@ -71,16 +72,27 @@
 // #components.adaptive-columns(outline(indent: 1em))
 // #outline()
 
-= What is ZK?
+---
 
-== Zero Knewledge: know nothing
+#align(center)[
+  #figure(
+    tiaoma.qrcode("https://github.com/simbafs/zk-STARK", height: 90%),
+    caption: [#link("https://github.com/simbafs/zk-STARK")[https://github.com/simbafs/zk-STARK]]
+  )
+]
 
-Prover claims that it has something (e.g. the trace) and it obeys some constraints (VM). Verifier can verify the claim without knowing the trace.
+---
 
-#figure(
-  image("./image/zk-arch.svg"),
-  caption: "ZK architecture",
-)
+= Zero Knewledge?
+
+// == Zero Knewledge: know nothing
+//
+// Prover claims that it has something (e.g. the trace) and it obeys some constraints (VM). Verifier can verify the claim without knowing the trace.
+//
+// #figure(
+//   image("./image/zk-arch.svg"),
+//   caption: "ZK architecture",
+// )
 
 == Types of ZK
 
