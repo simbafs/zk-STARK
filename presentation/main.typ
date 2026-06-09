@@ -37,7 +37,7 @@
 #set heading(numbering: numbly("{1}.", default: "1.1"))
 #show table.cell.where(y: 0): set text(weight: "bold", fill: white)
 
-#let F(x) = $FF_(#x\/{0})$
+#let F(x) = $FF_(#x)^*$
 
 #let theorem(body) = box(fill: rgb("#448C95"), radius: 10pt, inset: 20pt, width: 100%)[
   #text(fill: white)[
@@ -83,9 +83,9 @@
 
 ---
 
-= Zero Knewledge?
+= Zero Knowledge?
 
-// == Zero Knewledge: know nothing
+// == Zero Knowledge: know nothing
 //
 // Prover claims that it has something (e.g. the trace) and it obeys some constraints (VM). Verifier can verify the claim without knowing the trace.
 //
@@ -102,7 +102,7 @@
   [cryptographic support], [elliptic curve, pairings], [hash functions],
   [trusted setup], [yes], [no],
   [prove size], [small, $O(1)$], [\~100KiB, $O(log(n))$],
-  [verifier cost (gas on chain)], [low], [high],
+  [verifier costs (gas on chain)], [low], [high],
   [quantum resistance], [no], [yes (by changing the hash function)],
 )
 
@@ -118,7 +118,7 @@ $
 
 == Generator
 
-A generator is an element of #F(5) and it's powers generate all the elements in #F(5) 
+A generator is an element of #F(5) and its powers generate all the elements in #F(5) 
 
 #alternatives[
   #Cell(0)
@@ -140,7 +140,7 @@ A generator is an element of #F(5) and it's powers generate all the elements in 
 
 #pause
 
-For example $(1 +2) times 3$ is compiled into
+For example $(1 +2) times 3 + 6$ is compiled into
 ```
 set 1 // reg2 = 1
 swap  // reg1, reg2 = reg2, reg1
@@ -148,6 +148,8 @@ set 2 // reg2 = 2
 add   // reg1 = reg1 + reg2
 set 3 // reg2 = 3
 mul   // reg1 = reg1 * reg2
+set 6 // reg2 = 6
+add   // reg1 = reg1 + reg2
 ```
 
 ---
@@ -156,7 +158,7 @@ after executing the program, the trace is
 
 #mytable(
   (1fr, )*8,
-  table.header([reg1], [reg2], [input], [set], [swap], [add], [mul], [npp]),
+  table.header([reg1], [reg2], [input], [set], [swap], [add], [mul], [nop]),
   [0], [0], [1], [1], [0], [0], [0], [0],
   [0], [1], [0], [0], [1], [0], [0], [0],
   [1], [0], [2], [1], [0], [0], [0], [0],
@@ -193,14 +195,14 @@ where $G_k$ is the domain of $c_k (x)$, which are public parameters.
 
 == Challenge Initialization
 
-The verify randomly sample some points in $LL$ and some random number $beta_k$. #pause Prover then construct the composition polynomial
+The verify randomly chooses some number $beta_k$. #pause Prover then constructs the composition polynomial
 $ p(x) = sum_k beta_k (c_k (x))/(u_k (x)) $
 #pause
 Then commit the Merkle root of $p(x)$ in $LL$ to the verifier.
 
 == Check the composition polynomial
 
-The verifier then generate a sequence of $z in LL$, and the prover response $p(z)$ and $c_k (z)$. The verifier can check if $ p(z) = sum_k beta_k (c_k (z))/(u_k (z)) $ 
+The verifier then generates a sequence of $z in LL$, and the prover responses $p(z)$ and $c_k (z)$. The verifier can check if $ p(z) = sum_k beta_k (c_k (z))/(u_k (z)) $ 
 
 #theorem[
   $ c_"r1_add" (x) = f_"add" (x) dot (f_"r1" (x dot g) - (f_"r1" (x) + f_"r2" (x))) = 0 forall x in GG_k $
@@ -213,11 +215,11 @@ The verifier then generate a sequence of $z in LL$, and the prover response $p(z
 // In the previous step, the prover can cheat by constructing a high degree polynomial that can pass the check and modify some points in the trace. So the verifier need to check the degree of $p(x)$ is less than some threshold.
 
 // #pause
-1. The verifier randomly choose some $alpha_j$ and some $z in LL$
+1. The verifier randomly chooses some $alpha_j$ and some $z in LL$
 #pause
-2. The prover use FRI protocol #footnote[Fast Reed-Solomon Interactive Oracle Proof of Proximity] to fold $p(x)$ into a constant
+2. The prover uses FRI protocol #footnote[Fast Reed-Solomon Interactive Oracle Proof of Proximity] to fold $p(x)$ into a constant
 #pause
-3. The verifier check if the folding is correct and the final constant is identical among all input $z$
+3. The verifier checks if the folding is correct and the final constant is identical among all input $z$
 
 // == Why Check Low Degree? 
 // A valid $p(x)$ will have a maximum degree (in this VM, it it $2N-3$). If the prover want to cheat and pass the first check, it need to construct a high degree polynomial, because high polynomial degree gives high degrees of freedom.
@@ -390,7 +392,7 @@ $f_"input" (g^i) = "input"[i]$
 
 = Polynomial Commitment
 
-Prover then evaluated $f_k (x)$ in a larger subgroup $LL$ with generator $h$ and generate Merkle trees for those values. Then commit the root of the Merkle tree to the verifier so that verifier can check the values get from prover with Merkle proof in the following steps.
+Prover then evaluates $f_k (x)$ in a larger subgroup $LL$ with generator $h$ and generate Merkle trees for those values. Then commit the root of the Merkle tree to the verifier so that verifier can check the values get from prover with Merkle proof in the following steps.
 
 #fletcher.diagram(
   spacing: (5pt, 20pt),
@@ -468,17 +470,17 @@ Each constraint polynomial has its own domain, which is a subset of $GG$. In thi
 
 = Vanish Polynomials
 
-Vanish polynomials are used to make sure that the prover construct the constraint polynomials correctly. 
+Vanish polynomials are used to make sure that the prover constructs the constraint polynomials correctly. 
 
 $ u_k (x) = product_(g in GG') (x-g) $
 
-#note[verifier construct the vanish polynomials by itself, so the prover cannot cheat by constructing a wrong vanish polynomial.]
+#note[verifier constructs the vanish polynomials by itself, so the prover cannot cheat by constructing a wrong vanish polynomial.]
 
 = Composition Polynomial
 
 $ p(x) = (c(x))/(u(x)) $
 
-In $GG'$, $u(x) = 0$, but $c(x) = 0$, too. They can cancel each other out, so $p(x)$ still a good polynomial. However if the prover cheat on the constraint polynomials, for example $c(z) != 0, z in GG'$, $c(x)$ can not be divided by $u(x)$ anymore and verifier can easily check it. 
+In $GG'$, $u(x) = 0$, but $c(x) = 0$, too. They can cancel each other out, so $p(x)$ still a good polynomial. However if the prover cheats on the constraint polynomials, for example $c(z) != 0, z in GG'$, $c(x)$ can not be divided by $u(x)$ anymore and verifier can easily check it. 
 
 #pause 
 $ p(x) = sum_k beta_k (c_k (x))/(u_k (x)) $
