@@ -100,7 +100,6 @@
   (0.7fr, 1fr, 1fr),
   table.header([], [zk-SNARK], [zk-STARK]),
   [cryptographic support], [elliptic curve, pairings], [hash functions],
-  [trusted setup], [yes], [no],
   [prove size], [small, $O(1)$], [\~100KiB, $O(log(n))$],
   [verifier costs (gas on chain)], [low], [high],
   [quantum resistance], [no], [yes (by changing the hash function)],
