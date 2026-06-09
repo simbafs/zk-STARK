@@ -71,19 +71,15 @@
 
 // #components.adaptive-columns(outline(indent: 1em))
 // #outline()
+//
+// #align(center)[
+//   #figure(
+//     tiaoma.qrcode("https://github.com/simbafs/zk-STARK", height: 90%),
+//     caption: [#link("https://github.com/simbafs/zk-STARK")[https://github.com/simbafs/zk-STARK]]
+//   )
+// ]
 
----
-
-#align(center)[
-  #figure(
-    tiaoma.qrcode("https://github.com/simbafs/zk-STARK", height: 90%),
-    caption: [#link("https://github.com/simbafs/zk-STARK")[https://github.com/simbafs/zk-STARK]]
-  )
-]
-
----
-
-= Zero Knowledge?
+= Zero Knowledge
 
 // == Zero Knowledge: know nothing
 //
